@@ -56,7 +56,23 @@ router.post("/signup", async (req, res, next) => {
             "password": hashedPassword,
         });
 
-        res.redirect("/");
+        res.redirect("login");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/login", (req, res, next) => {
+    try {
+        res.render("auth/login");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.post("/login", (req, res, next) => {
+    try {
+        res.render("auth/login");
     } catch (error) {
         next(error);
     }
