@@ -1,0 +1,21 @@
+<div id="form">
+  <h2>Register</h2>
+  <form action="/auth/signup" method="POST">
+ 
+    <label> Username
+      <input type="text" name="username" placeholder="ironhacker" {{#if errors.username}}class="error"{{/if}} {{#if username}}value="{{username}}"{{/if}}/>
+    </label>
+  
+    <label> Password
+      <input type="password" name="password" placeholder="********" {{#if errors.password}}class="error"{{/if}}/>
+    </label>
+ 
+    <button type="submit">Sign Up</button>
+ 
+    {{#if errors.messages}}
+    <div class="error-messages">
+      {{#each errors.messages}} <p>{{this}}</p> {{/each}}
+    </div>
+    {{/if}}
+  </form>
+</div>
