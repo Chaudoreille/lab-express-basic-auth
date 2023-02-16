@@ -64,8 +64,6 @@ router.post("/signup", async (req, res, next) => {
 
 router.get("/login", (req, res, next) => {
     try {
-        console.log("SESSION =====> ", req.session);
-
         res.render("auth/login");
     } catch (error) {
         next(error);
@@ -75,32 +73,46 @@ router.get("/login", (req, res, next) => {
 router.post("/login", async (req, res, next) => {
     try {
         const { username, password } = req.body;
+        res.locals.errors = {
+            username: false,
+            password: false,
+            messages: [],
+        };
 
         if (!username) {
-            // handle empty username
-        }
-        if (!password) {
-            // handle empty password
-        }
-
-        const userPassword = await User.findOne({ username }, { password: 1 });
-
-        if (!userPassword) {
-            // handle user not found
+            res.locals.errors.username = true;
+            res.locals.errors.messages.push(
+                "I'm sorry, WHO are you, exactly ?"
+            );
+            return res.render("auth/login");
         }
 
-        const passwordMatch = await bcryptjs.compareSync(
-            password,
-            userPassword
-        );
-        if (!passwordMatch) {
-            // handle wrong password error
+        const reqUser = await User.findOne({ username }, { password: 1 });
+
+        if (!reqUser) {
+            res.locals.errors.username = true;
+            res.locals.errors.messages.push(
+                "I'm sorry, we don't know you. You can join or community or get lost."
+            );
+            return res.render("auth/login");
+        } else {
+            const passwordMatch = await bcryptjs.compareSync(
+                password,
+                reqUser.password
+            );
+
+            if (!passwordMatch) {
+                res.locals.errors.password = true;
+                res.locals.errors.messages.push(
+                    `Greetings, master ${username}.<br/>I'm terribly sorry, but I can't let you in if you don't have the password.`
+                );
+                return res.render("auth/login");
+            }
         }
 
-        const user = await User.findOne({ username });
+        const loggedInUser = await User.findOne({ username });
 
-        // create session
-        // add user to session
+        req.session.user = loggedInUser;
         res.redirect("/");
     } catch (error) {
         next(error);
