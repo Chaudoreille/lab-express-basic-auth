@@ -3,18 +3,18 @@
   <form action="/auth/login" method="POST">
 
     <label> Username
-      <input type="text" name="username" placeholder="Username" {{#if errors.username}}class="error"{{/if}} {{#if username}}value="{{username}}"{{/if}}/>
+      <input type="text" name="username" placeholder="Username" {{#if errors.username}}class="error"{{/if}} {{#if username}}value="{{username}}"{{/if}} required/>
     </label>
 
     <label> Password
-      <input type="password" name="password" placeholder="********" {{#if errors.password}}class="error"{{/if}}/>
+      <input type="password" name="password" placeholder="********" {{#if errors.password}}class="error"{{/if}} required/>
     </label>
 
     <button type="submit">Login</button>
 
     {{#if errors.messages}}
     <div class="error-messages">
-      {{#each errors.messages}} <p>{{{this}}}</p> {{/each}}
+      {{#each errors.messages}}<p>{{{this}}}</p>{{/each}}
     </div>
     {{/if}}
   </form>
