@@ -1,7 +1,14 @@
 <h1>{{title}}</h1>
 <p>Welcome to {{title}}</p>
-<a href="/main">PUBLIC</a>
-<a href="/private">PRIVATE</a>
-<a href="/auth/signup">Register</a>
-<a href="/auth/login">Login</a>
-<a href="/auth/logout">Logout</a>
+
+<div class="list">
+    <a href="/main">PUBLIC</a>
+    <a href="/private">PRIVATE</a>
+    {{#unless user}}
+    <a href="/auth/signup">Register</a>
+    <a href="/auth/login">Login</a>
+    {{/unless}}
+    {{#if user}}
+    <a href="/auth/logout">Logout</a>
+    {{/if}}
+</div>

@@ -1,6 +1,12 @@
-const { isLoggedIn, isLoggedOut } = require("./middleware/route-guard");
+const {
+    isLoggedIn,
+    isLoggedOut,
+    getUser,
+} = require("./middleware/route-guard");
 
 const router = require("express").Router();
+
+router.use("/", getUser);
 
 /* GET home page */
 router.get("/", (req, res, next) => {

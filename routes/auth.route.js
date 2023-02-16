@@ -92,7 +92,7 @@ router.post("/login", isLoggedOut, async (req, res, next) => {
         if (!reqUser) {
             res.locals.errors.username = true;
             res.locals.errors.messages.push(
-                "I'm sorry, we don't know you. You can join or community or get lost."
+                'I\'m sorry, we don\'t know you. You can <a href="/auth/signup">join the cult</a> or <a href="http://google.com">get lost.</a>'
             );
             return res.render("auth/login");
         } else {

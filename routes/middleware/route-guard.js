@@ -1,8 +1,9 @@
+const getUser = require("express").Router();
+
 const isLoggedIn = (req, res, next) => {
     if (!req.session.user) {
         return res.redirect("/auth/login");
     }
-    res.locals.user = req.session.user;
     next();
 };
 
@@ -13,7 +14,15 @@ const isLoggedOut = (req, res, next) => {
     next();
 };
 
+getUser.use("/", (req, res, next) => {
+    if (req.session.user) {
+        res.locals.user = req.session.user;
+    }
+    next();
+});
+
 module.exports = {
     isLoggedIn,
     isLoggedOut,
+    getUser,
 };
