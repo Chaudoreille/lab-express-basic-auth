@@ -1,11 +1,21 @@
-<h2>Login</h2>
+<div id="form">
+  <h2>Login</h2>
+  <form action="/auth/login" method="POST">
 
-<form action="/auth/login" method="post">
     <label> Username
-        <input type="text" name="username" id="username">
+      <input type="text" name="username" placeholder="Username" {{#if errors.username}}class="error"{{/if}} {{#if username}}value="{{username}}"{{/if}}/>
     </label>
-        <label> Password
-        <input type="password" name="password" id="password">
+
+    <label> Password
+      <input type="password" name="password" placeholder="********" {{#if errors.password}}class="error"{{/if}}/>
     </label>
-    <input type="submit" id="submit-btn" value="Login">
-</form>
+
+    <button type="submit">Login</button>
+
+    {{#if errors.messages}}
+    <div class="error-messages">
+      {{#each errors.messages}} <p>{{this}}</p> {{/each}}
+    </div>
+    {{/if}}
+  </form>
+</div>

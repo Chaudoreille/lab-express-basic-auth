@@ -64,15 +64,44 @@ router.post("/signup", async (req, res, next) => {
 
 router.get("/login", (req, res, next) => {
     try {
+        console.log("SESSION =====> ", req.session);
+
         res.render("auth/login");
     } catch (error) {
         next(error);
     }
 });
 
-router.post("/login", (req, res, next) => {
+router.post("/login", async (req, res, next) => {
     try {
-        res.render("auth/login");
+        const { username, password } = req.body;
+
+        if (!username) {
+            // handle empty username
+        }
+        if (!password) {
+            // handle empty password
+        }
+
+        const userPassword = await User.findOne({ username }, { password: 1 });
+
+        if (!userPassword) {
+            // handle user not found
+        }
+
+        const passwordMatch = await bcryptjs.compareSync(
+            password,
+            userPassword
+        );
+        if (!passwordMatch) {
+            // handle wrong password error
+        }
+
+        const user = await User.findOne({ username });
+
+        // create session
+        // add user to session
+        res.redirect("/");
     } catch (error) {
         next(error);
     }
