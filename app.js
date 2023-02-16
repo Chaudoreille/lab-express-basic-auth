@@ -15,11 +15,11 @@ const hbs = require("hbs");
 
 const app = express();
 
-// configure session & cookies
-require("./config/session.config")(app);
-
 // ℹ️ This function is getting exported from the config folder. It runs most middlewares
 require("./config")(app);
+
+// configure session & cookies
+require("./config/session.config")(app);
 
 // default value for title local
 const projectName = "lab-express-basic-auth";

@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const bcryptjs = require("bcryptjs");
-const e = require("express");
 const User = require("../models/User.model");
+const { isLoggedIn, isLoggedOut } = require("./middleware/route-guard");
 const saltRounds = 10;
 
-router.get("/signup", (req, res, next) => {
+router.get("/signup", isLoggedOut, (req, res, next) => {
     try {
         res.render("auth/signup");
     } catch (error) {
@@ -12,7 +12,7 @@ router.get("/signup", (req, res, next) => {
     }
 });
 
-router.post("/signup", async (req, res, next) => {
+router.post("/signup", isLoggedOut, async (req, res, next) => {
     try {
         res.locals.errors = {
             username: false,
@@ -62,7 +62,7 @@ router.post("/signup", async (req, res, next) => {
     }
 });
 
-router.get("/login", (req, res, next) => {
+router.get("/login", isLoggedOut, (req, res, next) => {
     try {
         res.render("auth/login");
     } catch (error) {
@@ -70,7 +70,7 @@ router.get("/login", (req, res, next) => {
     }
 });
 
-router.post("/login", async (req, res, next) => {
+router.post("/login", isLoggedOut, async (req, res, next) => {
     try {
         const { username, password } = req.body;
         res.locals.errors = {
@@ -113,6 +113,15 @@ router.post("/login", async (req, res, next) => {
         const loggedInUser = await User.findOne({ username });
 
         req.session.user = loggedInUser;
+        res.redirect("/");
+    } catch (error) {
+        next(error);
+    }
+});
+
+router.get("/logout", isLoggedIn, (req, res, next) => {
+    try {
+        this.session.destroy();
         res.redirect("/");
     } catch (error) {
         next(error);
